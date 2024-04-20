@@ -1,0 +1,43 @@
+<%- include('layouts/mainLayout.ejs') %>
+
+<h1>
+    <form action="/projects/<%= project._id %>/updateTitle" method="POST"> <!-- Update action URL -->
+        <input type="text" name="title" value="<%= project.title %>">
+        <button type="submit">Save</button>
+    </form>    
+</h1>
+<h2>Todos</h2>
+<ul>
+    <% project.todos.forEach(todo => { %>
+        <li>
+            <form action="/projects/<%= project._id %>/todo/<%= todo._id %>" method="POST">
+                <input type="hidden" name="todoId" value="<%= todo._id %>"> <!-- Add hidden input for todo ID -->
+                <input type="text" name="description" value="<%= todo.description %>">
+                <select name="status">
+                    <option value="pending" <%= todo.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                    <option value="completed" <%= todo.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                </select>
+                <p>Created Date: <%= todo.createdDate.toLocaleString() %></p>
+                <p>Updated Date: <%= todo.updatedDate.toLocaleString() %></p>
+                <button type="submit">Update</button>
+                <button formaction="/projects/<%= project._id %>/todo/<%= todo._id %>/delete" formmethod="POST">Delete</button>
+            </form>
+        </li>
+    <% }) %>
+</ul>
+<form action="/projects/<%= project._id %>/todo" method="POST">
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" required>
+    <button type="submit">Add Todo</button>
+</form>
+
+<!-- Download Button -->
+<form id="downloadForm" action="/projects/<%= project._id %>/export-summary" method="GET"> <!-- Update action URL -->
+    <button type="button" id="downloadBtn">Download Project Summary</button>
+</form>
+
+<script>
+    document.getElementById("downloadBtn").addEventListener("click", function() {
+        document.getElementById("downloadForm").submit();
+    });
+</script>

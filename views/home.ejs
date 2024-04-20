@@ -1,0 +1,16 @@
+<!-- views/home.ejs -->
+
+<%- include('layouts/mainLayout.ejs') %>
+
+<!-- Render content directly without using blocks -->
+<div class="container">
+    <h1>All Projects</h1>
+    <ul>
+        <% body.forEach(project => { %>
+            <li><a href="/projects/<%= project._id %>"><%= project.title %></a></li>
+        <% }) %>
+    </ul>
+
+    <!-- Add button to create new project -->
+    <a href="/projects/new" class="btn btn-primary">Create New Project</a>
+</div>
